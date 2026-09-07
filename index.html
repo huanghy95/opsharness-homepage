@@ -26,6 +26,10 @@
           <li><a href="#overview" data-i18n="nav.overview">Overview</a></li><li><a href="#method" data-i18n="nav.method">Method</a></li><li><a href="#results" data-i18n="nav.results">Results</a></li><li><a href="#usage" data-i18n="nav.usage">Usage</a></li><li><a href="#citation" data-i18n="nav.citation">Citation</a></li>
         </ul>
       </nav>
+      <div class="nav-actions">
+        <button class="language-toggle" type="button" data-language-toggle data-i18n="language.switch" aria-label="Switch to Chinese">中文</button>
+        <button class="nav-toggle" type="button" data-nav-toggle data-i18n="nav.menu" aria-expanded="false" aria-controls="primary-navigation">Menu</button>
+      </div>
     </div>
   </header>
 
@@ -67,19 +71,19 @@
     <section class="section section--why" id="overview" aria-labelledby="overview-title">
       <div class="shell">
         <header class="section-heading"><p class="section-number" data-i18n="overview.kicker">01 — The shift</p><h2 id="overview-title"><span data-i18n="overview.titleLead">The agent is capable.</span><br><em data-i18n="overview.titleEm">The harness is the missing layer.</em></h2><p data-i18n="overview.intro">General coding agents already bring mature planning, tool use, and long-horizon reasoning. For RCA, the remaining gap is the external layer that teaches them how this system behaves.</p></header>
-        <div class="comparison-grid">
+        <div class="comparison-grid" data-reveal>
           <article class="comparison-card comparison-card--muted"><span class="card-label" data-i18n="overview.routeA">Route A</span><h3 data-i18n="overview.bareTitle">Use a bare general agent</h3><p data-i18n="overview.bareBody">Excellent general capability, but every target system is unfamiliar. It lacks the local patterns that distinguish root causes from noisy symptoms.</p><div class="card-status"><span aria-hidden="true">△</span><span data-i18n="overview.bareStatus">General, not specialized</span></div></article>
           <article class="comparison-card comparison-card--muted"><span class="card-label" data-i18n="overview.routeB">Route B</span><h3 data-i18n="overview.rebuildTitle">Rebuild an RCA agent</h3><p data-i18n="overview.rebuildBody">Specialized frameworks reimplement planning, tools, and context management—and often underperform the fast-moving general agents they replace.</p><div class="card-status"><span aria-hidden="true">×</span><span data-i18n="overview.rebuildStatus">Specialized, but brittle</span></div></article>
           <article class="comparison-card comparison-card--accent"><span class="card-label">OpsHarness</span><h3 data-i18n="overview.harnessTitle">Build around the agent</h3><p data-i18n="overview.harnessBody">Keep the general agent. Add RCA skills, system knowledge, idea-card tools, observability, and a verified loop that learns from every diagnosis.</p><div class="card-status"><span aria-hidden="true">✓</span><span data-i18n="overview.harnessStatus">General + evolving expertise</span></div></article>
         </div>
-        <figure class="paper-figure paper-figure--wide"><div class="figure-frame"><img src="static/images/intro-superpowers.png" alt="Illustration showing OpsHarness injecting RCA skills, knowledge, observability, verification, and self-evolution into a general-purpose agent"></div><figcaption><span>Figure 1</span><span data-i18n="overview.caption">OpsHarness injects RCA-specific capabilities into a general-purpose agent without rebuilding its general machinery.</span></figcaption></figure>
+        <figure class="paper-figure paper-figure--wide"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Figure 1"><img src="static/images/intro-superpowers.png" alt="Illustration showing OpsHarness injecting RCA skills, knowledge, observability, verification, and self-evolution into a general-purpose agent"></button></div><figcaption><span>Figure 1</span><span data-i18n="overview.caption">OpsHarness injects RCA-specific capabilities into a general-purpose agent without rebuilding its general machinery.</span></figcaption></figure>
       </div>
     </section>
 
     <section class="section section--method" id="method" aria-labelledby="method-title">
       <div class="shell">
         <header class="section-heading section-heading--split"><div><p class="section-number" data-i18n="method.kicker">02 — The architecture</p><h2 id="method-title"><span data-i18n="method.titleLead">A harness with</span><br><em data-i18n="method.titleEm">memory and control.</em></h2></div><p data-i18n="method.intro">OpsHarness separates what the agent knows from how that knowledge is acquired, tested, and promoted.</p></header>
-        <div class="plane-grid">
+        <div class="plane-grid" data-reveal>
           <article class="plane-card plane-card--data">
             <header><span class="plane-icon" aria-hidden="true">K</span><div><span class="card-label" data-i18n="method.dataKicker">Per-system state</span><h3>Data Plane</h3></div></header>
             <p data-i18n="method.dataIntro">System-specific expertise is organized for progressive disclosure, so the agent loads only what each diagnosis needs.</p>
@@ -101,14 +105,14 @@
           </article>
         </div>
         <div class="workflow" aria-label="OpsHarness lifecycle"><article><span>01</span><strong>Setup</strong><small data-i18n="workflow.setup">adapt to the system</small></article><i aria-hidden="true">→</i><article><span>02</span><strong>Diagnose</strong><small data-i18n="workflow.diagnose">produce evidence</small></article><i aria-hidden="true">→</i><article><span>03</span><strong>Evolve</strong><small data-i18n="workflow.evolve">propose improvements</small></article><i aria-hidden="true">→</i><article class="is-verified"><span>04</span><strong>Verify</strong><small data-i18n="workflow.verify">promote only if safe</small></article><i aria-hidden="true">↺</i></div>
-        <figure class="paper-figure paper-figure--wide"><div class="figure-frame"><img src="static/images/method-architecture.jpg" alt="OpsHarness architecture with a layered knowledge store, idea-card tool library, and Setup, Diagnose, Evolve, Verify control workflows"></div><figcaption><span>Figure 2</span><span data-i18n="method.caption">The complete OpsHarness data plane, control plane, and end-to-end usage flow.</span></figcaption></figure>
+        <figure class="paper-figure paper-figure--wide"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Figure 2"><img src="static/images/method-architecture.jpg" alt="OpsHarness architecture with a layered knowledge store, idea-card tool library, and Setup, Diagnose, Evolve, Verify control workflows"></button></div><figcaption><span>Figure 2</span><span data-i18n="method.caption">The complete OpsHarness data plane, control plane, and end-to-end usage flow.</span></figcaption></figure>
       </div>
     </section>
 
     <section class="section section--evolution" id="evolution" aria-labelledby="evolution-title">
       <div class="shell">
         <header class="section-heading section-heading--center"><p class="section-number" data-i18n="evolution.kicker">03 — Self-evolution</p><h2 id="evolution-title"><span data-i18n="evolution.titleLead">Learn from one incident.</span><br><em data-i18n="evolution.titleEm">Diagnose the next one better.</em></h2><p data-i18n="evolution.intro">OpsHarness treats both success and failure as evidence—but never treats an improvement proposal as truth until it passes two gates.</p></header>
-        <div class="incident-story">
+        <div class="incident-story" data-reveal>
           <article class="story-card story-card--failure"><span class="story-step" data-i18n="evolution.step1">Incident / 01</span><div class="story-symbol" aria-hidden="true">↯</div><h3 data-i18n="evolution.story1Title">A plausible signal misleads</h3><p data-i18n="evolution.story1Body">The first diagnosis follows a noisy database-session drop and ranks the true CPU saturation only third.</p><span class="story-state" data-i18n="evolution.story1State">Feedback: Top-3 is correct</span></article>
           <div class="story-arrow" aria-hidden="true">→</div>
           <article class="story-card story-card--evolve"><span class="story-step" data-i18n="evolution.step2">Evolution / 02</span><div class="story-symbol" aria-hidden="true">◇</div><h3 data-i18n="evolution.story2Title">Experience becomes a rule</h3><p data-i18n="evolution.story2Body">The evolver distills the propagation chain and the caveat that session-count drops may be incidental noise.</p><span class="story-state" data-i18n="evolution.story2State">Proposal: atomic + reviewable</span></article>
@@ -116,23 +120,23 @@
           <article class="story-card story-card--success"><span class="story-step" data-i18n="evolution.step3">Recurrence / 03</span><div class="story-symbol" aria-hidden="true">✓</div><h3 data-i18n="evolution.story3Title">The right cause ranks first</h3><p data-i18n="evolution.story3Body">On the next similar incident, the evolved harness reuses verified experience and localizes the faulty component in under two minutes.</p><span class="story-state" data-i18n="evolution.story3State">Result: Top-1 diagnosis</span></article>
         </div>
         <aside class="verification-gate" aria-label="Dual-gate verification"><div><span class="gate-number">Gate 1</span><strong data-i18n="evolution.gate1Title">Source cases improve</strong><small data-i18n="evolution.gate1Body">The staged harness must beat the cases that inspired the proposal.</small></div><span class="gate-plus" aria-hidden="true">+</span><div><span class="gate-number">Gate 2</span><strong data-i18n="evolution.gate2Title">Held-out cases do not regress</strong><small data-i18n="evolution.gate2Body">A disjoint global testbed prevents local fixes from becoming global failures.</small></div><span class="gate-result"><span aria-hidden="true">✓</span><span data-i18n="evolution.promote">Promote</span></span></aside>
-        <figure class="paper-figure paper-figure--wide"><div class="figure-frame"><img src="static/images/incident-learning.png" alt="Industrial case study showing how one corrected incident is distilled into reusable knowledge for faster diagnosis of a later incident"></div><figcaption><span>Figure 3</span><span data-i18n="evolution.caption">Industrial case study: experience becomes verified knowledge, then a better diagnosis.</span></figcaption></figure>
+        <figure class="paper-figure paper-figure--wide"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Figure 3"><img src="static/images/incident-learning.png" alt="Industrial case study showing how one corrected incident is distilled into reusable knowledge for faster diagnosis of a later incident"></button></div><figcaption><span>Figure 3</span><span data-i18n="evolution.caption">Industrial case study: experience becomes verified knowledge, then a better diagnosis.</span></figcaption></figure>
       </div>
     </section>
 
     <section class="section section--results" id="results" aria-labelledby="results-title">
       <div class="shell">
         <header class="section-heading section-heading--split"><div><p class="section-number" data-i18n="results.kicker">04 — The evidence</p><h2 id="results-title"><span data-i18n="results.titleLead">It improves with use.</span><br><em data-i18n="results.titleEm">The gate makes it reliable.</em></h2></div><p data-i18n="results.intro">Across OpenRCA, RCAEval, four model backbones, two agent frameworks, and an industrial deployment, the gains are consistent and practical.</p></header>
-        <div class="result-summary">
+        <div class="result-summary" data-reveal>
           <article><span class="result-label" data-i18n="results.overallLabel">Overall effectiveness</span><strong>59.0%</strong><p data-i18n="results.overallBody">Final A@1 for full OpsHarness, versus 41.4% without evolution and 36.1% for Direct.</p></article>
           <article><span class="result-label" data-i18n="results.learningLabel">Learning with use</span><strong>0.83 <small>vs 0.43</small></strong><p data-i18n="results.learningBody">Final-window A@1 for full OpsHarness versus the non-evolving harness.</p></article>
           <article><span class="result-label" data-i18n="results.verifyLabel">Verification matters</span><strong>37%</strong><p data-i18n="results.verifyBody">of evolution proposals are rejected; unverified evolution finishes at only 0.33 A@1.</p></article>
           <article><span class="result-label" data-i18n="results.industryLabel">Industrial deployment</span><strong>0.74 <small>vs 0.24</small></strong><p data-i18n="results.industryBody">Average A@1 for OpsHarness versus Direct across six production configurations.</p></article>
         </div>
-        <div class="results-grid">
-          <figure class="paper-figure"><div class="figure-frame"><img src="static/images/evolution-curve.png" alt="Accuracy curves over twelve continuous-diagnosis windows showing verified OpsHarness improving while no-evolve stays flat and no-verify regresses"></div><figcaption><span>Finding 1</span><span data-i18n="results.caption1">Verified evolution steadily raises accuracy across all four backbones.</span></figcaption></figure>
-          <figure class="paper-figure"><div class="figure-frame"><img src="static/images/industrial-results.png" alt="Industrial A@1 results showing OpsHarness outperforming Direct across Codex and Open Code configurations"></div><figcaption><span>Finding 2</span><span data-i18n="results.caption2">The gains transfer to a real production system and an open agent stack.</span></figcaption></figure>
-          <figure class="paper-figure paper-figure--wide-result"><div class="figure-frame"><img src="static/images/diagnosis-cost.png" alt="Token and wall-clock diagnosis costs showing OpsHarness remains comparable to Direct and ICL while specialized RCA agents cost more"></div><figcaption><span>Finding 3</span><span data-i18n="results.caption3">Per-case cost stays comparable to Direct and ICL while accuracy rises.</span></figcaption></figure>
+        <div class="results-grid" data-reveal>
+          <figure class="paper-figure"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Finding 1"><img src="static/images/evolution-curve.png" alt="Accuracy curves over twelve continuous-diagnosis windows showing verified OpsHarness improving while no-evolve stays flat and no-verify regresses"></button></div><figcaption><span>Finding 1</span><span data-i18n="results.caption1">Verified evolution steadily raises accuracy across all four backbones.</span></figcaption></figure>
+          <figure class="paper-figure"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Finding 2"><img src="static/images/industrial-results.png" alt="Industrial A@1 results showing OpsHarness outperforming Direct across Codex and Open Code configurations"></button></div><figcaption><span>Finding 2</span><span data-i18n="results.caption2">The gains transfer to a real production system and an open agent stack.</span></figcaption></figure>
+          <figure class="paper-figure paper-figure--wide-result"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Finding 3"><img src="static/images/diagnosis-cost.png" alt="Token and wall-clock diagnosis costs showing OpsHarness remains comparable to Direct and ICL while specialized RCA agents cost more"></button></div><figcaption><span>Finding 3</span><span data-i18n="results.caption3">Per-case cost stays comparable to Direct and ICL while accuracy rises.</span></figcaption></figure>
         </div>
       </div>
     </section>
@@ -142,7 +146,11 @@
         <div class="usage-copy"><p class="section-number" data-i18n="usage.kicker">05 — Usage preview</p><h2 id="usage-title"><span data-i18n="usage.titleLead">One harness.</span><br><em data-i18n="usage.titleEm">Two agent interfaces.</em></h2><p data-i18n="usage.intro">OpsHarness keeps the same skills, tools, knowledge, and ground-truth guard across Codex and Claude Code. Only the invocation syntax changes.</p><div class="release-note"><span class="status-dot" aria-hidden="true"></span><strong data-i18n="usage.soon">Code release coming soon.</strong><br><span data-i18n="usage.note">The commands below preview the public workflow described in the paper and implementation.</span></div></div>
         <div class="terminal-card">
           <div class="terminal-bar"><div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div><span>opsharness / workflow</span></div>
-          <div class="static-code-group"><h3>Codex</h3><pre><code><span class="code-comment"># Adapt to a telemetry system</span>
+          <div class="usage-tabs" role="tablist" aria-label="Agent interface">
+            <button class="usage-tab" type="button" role="tab" aria-selected="true" aria-controls="codex-panel" id="codex-tab" tabindex="0">Codex</button>
+            <button class="usage-tab" type="button" role="tab" aria-selected="false" aria-controls="claude-panel" id="claude-tab" tabindex="-1">Claude Code</button>
+          </div>
+          <div class="usage-panel" id="codex-panel" role="tabpanel" aria-labelledby="codex-tab"><pre><code><span class="code-comment"># Adapt to a telemetry system</span>
 $setup
 
 <span class="code-comment"># Diagnose an incident</span>
@@ -152,7 +160,7 @@ service latency spike"
 <span class="code-comment"># Learn from feedback</span>
 $evaluate &lt;sessions&gt; "/path/to/ground-truth"
 $evolve "last 10 diagnoses"</code></pre></div>
-          <div class="static-code-group"><h3>Claude Code</h3><pre><code><span class="code-comment"># Adapt to a telemetry system</span>
+          <div class="usage-panel" id="claude-panel" role="tabpanel" aria-labelledby="claude-tab" hidden><pre><code><span class="code-comment"># Adapt to a telemetry system</span>
 /ops-harness:setup
 
 <span class="code-comment"># Diagnose an incident</span>
@@ -181,7 +189,7 @@ service latency spike"
     <section class="section section--citation" id="citation" aria-labelledby="citation-title">
       <div class="shell citation-grid">
         <div><p class="section-number" data-i18n="citation.kicker">07 — Cite the work</p><h2 id="citation-title">BibTeX</h2><p data-i18n="citation.intro">If OpsHarness is useful in your research, please cite the arXiv preprint.</p></div>
-        <div class="citation-card"><pre id="bibtex-code"><code>@misc{huang2026opsharness,
+        <div class="citation-card"><button class="copy-button" type="button" data-copy-target="bibtex-code" data-i18n="copy.label" data-i18n-success="copy.success" data-i18n-failure="copy.failure">Copy BibTeX</button><pre id="bibtex-code"><code>@misc{huang2026opsharness,
   title={From General Agents to RCA Experts: A Self-Evolving Harness for Root Cause Analysis},
   author={Haiyu Huang and Jiewei Lyu and Zhihan Jiang and Jinyang Liu and Xiao He and Tieying Zhang and Wu Xiang and Michael R. Lyu},
   year={2026},
@@ -194,6 +202,10 @@ service latency spike"
     </section>
   </main>
 
+  <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Expanded paper figure" data-lightbox>
+    <button type="button" data-lightbox-close data-i18n="lightbox.close" aria-label="Close expanded figure">Close</button>
+    <img data-lightbox-target alt="">
+  </div>
   <footer class="site-footer"><div class="shell footer-grid"><div><strong>OpsHarness</strong><p data-i18n="footer.tagline">From general agents to RCA experts.</p></div><p>CUHK · Individual Researcher · ByteDance</p><div class="footer-links"><a href="https://arxiv.org/pdf/2608.25661">Paper</a><a href="https://arxiv.org/abs/2608.25661">arXiv</a></div></div></footer>
 </body>
 </html>

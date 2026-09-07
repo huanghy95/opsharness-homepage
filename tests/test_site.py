@@ -64,6 +64,9 @@ class HomepageContractTests(unittest.TestCase):
     def test_every_image_has_alt_text(self):
         self.assertGreater(len(self.parser.images), 0)
         for image in self.parser.images:
+            if "data-lightbox-target" in image:
+                self.assertEqual(image.get("alt"), "")
+                continue
             self.assertTrue(image.get("alt", "").strip(), image)
 
     def test_local_assets_resolve(self):
@@ -111,6 +114,32 @@ class HomepageContractTests(unittest.TestCase):
         self.assertEqual(set(catalog["en"]), set(catalog["zh"]))
         self.assertGreater(len(self.parser.i18n_keys), 40)
         self.assertTrue(self.parser.i18n_keys.issubset(catalog["en"]))
+
+    def test_interaction_hooks_and_fallbacks_exist(self):
+        js_path = ROOT / "static/js/main.js"
+        self.assertTrue(js_path.is_file())
+        js = js_path.read_text(encoding="utf-8")
+        for contract in (
+            "localStorage",
+            "IntersectionObserver",
+            "navigator.clipboard",
+            "prefers-reduced-motion",
+            "Escape",
+            "aria-expanded",
+            "aria-selected",
+        ):
+            self.assertIn(contract, js)
+
+    def test_interactive_controls_are_labeled(self):
+        for attribute in (
+            "data-language-toggle",
+            "data-nav-toggle",
+            'role="tablist"',
+            "data-copy-target",
+            'role="dialog"',
+            'aria-modal="true"',
+        ):
+            self.assertIn(attribute, self.source)
 
 
 if __name__ == "__main__":

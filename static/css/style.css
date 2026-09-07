@@ -106,6 +106,10 @@ button {
   -webkit-backdrop-filter: blur(16px);
 }
 
+.site-header.is-scrolled {
+  box-shadow: 0 10px 34px rgba(35, 28, 18, 0.08);
+}
+
 .nav-shell {
   display: flex;
   min-height: 66px;
@@ -1382,7 +1386,7 @@ a.resource-link--primary:hover {
   font-size: 0.7rem;
 }
 
-[data-reveal] {
+[data-reveal].reveal-ready {
   opacity: 0;
   transform: translateY(22px);
   transition: opacity 650ms ease, transform 650ms ease;

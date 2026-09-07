@@ -6,6 +6,7 @@ window.OPSHARNESS_I18N = {
     "nav.results": "Results",
     "nav.usage": "Usage",
     "nav.citation": "Citation",
+    "nav.menu": "Menu",
     "hero.eyebrow": "A self-evolving external harness for RCA",
     "hero.thesis": "OpsHarness turns diagnosis experience into reusable expertise—then verifies every evolution before it reaches the live harness.",
     "hero.before": "Before",
@@ -111,6 +112,10 @@ window.OPSHARNESS_I18N = {
     "paper.abstract4": "During evolution, OpsHarness contrasts successful and failed trajectories, converts their evidence into atomic proposals, and admits updates only through a dual-gate verification process designed to prevent overfitting and regression. Across two public benchmarks and an industrial deployment, OpsHarness achieves 59.0% top-1 accuracy, improving over a bare general agent by 63.4% and over baseline RCA agents by 4.02×.",
     "citation.kicker": "07 — Cite the work",
     "citation.intro": "If OpsHarness is useful in your research, please cite the arXiv preprint.",
+    "copy.label": "Copy BibTeX",
+    "copy.success": "Copied",
+    "copy.failure": "Select and copy manually",
+    "lightbox.close": "Close",
     "footer.tagline": "From general agents to RCA experts."
   },
   "zh": {
@@ -120,6 +125,7 @@ window.OPSHARNESS_I18N = {
     "nav.results": "实验结果",
     "nav.usage": "使用方式",
     "nav.citation": "引用",
+    "nav.menu": "菜单",
     "hero.eyebrow": "面向根因分析的自进化外部 Harness",
     "hero.thesis": "OpsHarness 将诊断经历转化为可复用的专业经验，并在每次进化进入在线 Harness 前完成验证。",
     "hero.before": "使用前",
@@ -225,6 +231,10 @@ window.OPSHARNESS_I18N = {
     "paper.abstract4": "在进化过程中，OpsHarness 对比成功与失败的诊断轨迹，将其中的证据转化为原子化提案，并仅允许通过双重验证门的更新进入在线 Harness，从而避免过拟合与性能回归。在两个公开基准和一次工业部署中，OpsHarness 达到 59.0% 的 Top-1 准确率，相比直接使用通用 Agent 提升 63.4%，相比基线 RCA Agent 提升 4.02×。",
     "citation.kicker": "07 — 引用本文",
     "citation.intro": "如果 OpsHarness 对你的研究有所帮助，请引用这篇 arXiv 预印本。",
+    "copy.label": "复制 BibTeX",
+    "copy.success": "已复制",
+    "copy.failure": "请手动选择并复制",
+    "lightbox.close": "关闭",
     "footer.tagline": "让通用 Agent 成为 RCA 专家。"
   }
 };
