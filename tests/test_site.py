@@ -100,6 +100,18 @@ class HomepageContractTests(unittest.TestCase):
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertIn(":focus-visible", css)
 
+    def test_every_markup_i18n_key_has_both_languages(self):
+        js_path = ROOT / "static/js/i18n.js"
+        self.assertTrue(js_path.is_file())
+        js = js_path.read_text(encoding="utf-8")
+        match = re.search(r"window\.OPSHARNESS_I18N\s*=\s*(\{.*\});", js, re.S)
+        self.assertIsNotNone(match)
+        catalog = json.loads(match.group(1))
+        self.assertEqual(set(catalog), {"en", "zh"})
+        self.assertEqual(set(catalog["en"]), set(catalog["zh"]))
+        self.assertGreater(len(self.parser.i18n_keys), 40)
+        self.assertTrue(self.parser.i18n_keys.issubset(catalog["en"]))
+
 
 if __name__ == "__main__":
     unittest.main()
