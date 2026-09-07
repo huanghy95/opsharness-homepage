@@ -75,6 +75,18 @@ class HomepageContractTests(unittest.TestCase):
             if src.startswith("static/"):
                 self.assertTrue((ROOT / src).is_file(), src)
 
+    def test_raster_asset_extensions_match_their_file_signatures(self):
+        for asset in (ROOT / "static/images").iterdir():
+            if asset.suffix == ".png":
+                self.assertEqual(asset.read_bytes()[:8], b"\x89PNG\r\n\x1a\n", asset.name)
+            if asset.suffix in {".jpg", ".jpeg"}:
+                self.assertEqual(asset.read_bytes()[:2], b"\xff\xd8", asset.name)
+
+    def test_favicon_is_declared_and_resolves(self):
+        favicon = "static/images/favicon.svg"
+        self.assertIn(f'<link rel="icon" href="{favicon}" type="image/svg+xml">', self.source)
+        self.assertTrue((ROOT / favicon).is_file())
+
     def test_claims_match_the_paper(self):
         for claim in ("59.0%", "+63.4%", "4.02×", "0.83", "0.43", "0.74", "0.24"):
             self.assertIn(claim, self.source)
@@ -140,6 +152,14 @@ class HomepageContractTests(unittest.TestCase):
             'aria-modal="true"',
         ):
             self.assertIn(attribute, self.source)
+
+    def test_readme_documents_preview_and_validation(self):
+        readme_path = ROOT / "README.md"
+        self.assertTrue(readme_path.is_file())
+        readme = readme_path.read_text(encoding="utf-8")
+        self.assertIn("python3 -m http.server 8000", readme)
+        self.assertIn("python3 -m unittest discover -s tests -v", readme)
+        self.assertIn("https://arxiv.org/abs/2608.25661", readme)
 
 
 if __name__ == "__main__":
