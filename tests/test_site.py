@@ -90,6 +90,16 @@ class HomepageContractTests(unittest.TestCase):
         positions = [self.source.index(author) for author in authors]
         self.assertEqual(positions, sorted(positions))
 
+    def test_css_has_responsive_and_accessibility_contracts(self):
+        css_path = ROOT / "static/css/style.css"
+        self.assertTrue(css_path.is_file())
+        css = css_path.read_text(encoding="utf-8")
+        for token in ("--violet", "--verified", "--paper", "--ink", "--mono"):
+            self.assertIn(token, css)
+        self.assertIn("@media (max-width: 760px)", css)
+        self.assertIn("prefers-reduced-motion: reduce", css)
+        self.assertIn(":focus-visible", css)
+
 
 if __name__ == "__main__":
     unittest.main()
