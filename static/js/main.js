@@ -47,13 +47,10 @@
       if (typeof value === "string") node.dataset.failureLabel = value;
     });
 
-    const languageToggle = document.querySelector("[data-language-toggle]");
-    if (languageToggle) {
-      languageToggle.setAttribute(
-        "aria-label",
-        supported === "en" ? "Switch to Chinese" : "Switch to English",
-      );
-    }
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((node) => {
+      const value = catalog[node.dataset.i18nAriaLabel];
+      if (typeof value === "string") node.setAttribute("aria-label", value);
+    });
 
     document.documentElement.lang = supported === "zh" ? "zh-CN" : "en";
     saveLanguage(supported);
@@ -117,6 +114,10 @@
         activate(tabs[(index + offset + tabs.length) % tabs.length], true);
       });
     });
+
+    const selectedTab = tabs.find((tab) => tab.getAttribute("aria-selected") === "true") || tabs[0];
+    activate(selectedTab);
+    selectedTab.closest(".terminal-card")?.classList.add("tabs-ready");
   }
 
   function fallbackCopy(text) {
@@ -133,6 +134,7 @@
   }
 
   function initCopyButtons() {
+    const status = document.querySelector("[data-copy-status]");
     document.querySelectorAll("[data-copy-target]").forEach((button) => {
       button.addEventListener("click", async () => {
         const target = document.getElementById(button.dataset.copyTarget);
@@ -149,9 +151,11 @@
         } catch (_) {
           button.textContent = button.dataset.failureLabel || "Select and copy manually";
         }
+        if (status) status.textContent = button.textContent;
 
         window.setTimeout(() => {
           button.textContent = original;
+          if (status) status.textContent = "";
         }, 1800);
       });
     });
@@ -164,12 +168,26 @@
     if (!dialog || !target || !closeButton) return;
 
     let trigger = null;
+    let inertedNodes = [];
+
+    const setBackgroundInert = (inert) => {
+      if (inert) {
+        inertedNodes = [...document.body.children].filter(
+          (node) => node !== dialog && !node.hasAttribute("inert"),
+        );
+        inertedNodes.forEach((node) => node.setAttribute("inert", ""));
+        return;
+      }
+      inertedNodes.forEach((node) => node.removeAttribute("inert"));
+      inertedNodes = [];
+    };
 
     const close = () => {
       dialog.setAttribute("aria-hidden", "true");
       target.removeAttribute("src");
       target.alt = "";
       document.body.classList.remove("lightbox-open");
+      setBackgroundInert(false);
       if (trigger) trigger.focus();
     };
 
@@ -182,6 +200,7 @@
         target.alt = image.alt;
         dialog.setAttribute("aria-hidden", "false");
         document.body.classList.add("lightbox-open");
+        setBackgroundInert(true);
         closeButton.focus();
       });
     });
@@ -191,6 +210,11 @@
       if (event.target === dialog) close();
     });
     document.addEventListener("keydown", (event) => {
+      if (event.key === "Tab" && dialog.getAttribute("aria-hidden") === "false") {
+        event.preventDefault();
+        closeButton.focus();
+        return;
+      }
       if (event.key === "Escape" && dialog.getAttribute("aria-hidden") === "false") {
         close();
       }

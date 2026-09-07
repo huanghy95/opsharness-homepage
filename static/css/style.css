@@ -96,6 +96,16 @@ button {
   transform: translateY(0);
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -1252,18 +1262,22 @@ a.resource-link--primary:hover {
 }
 
 .code-comment {
-  color: #6f6c76;
+  color: #96939f;
 }
 
 .usage-tabs {
-  display: flex;
+  display: none;
   border-bottom: 1px solid #35343b;
   background: #18171c;
 }
 
+.terminal-card.tabs-ready .usage-tabs {
+  display: flex;
+}
+
 .usage-tab {
   cursor: pointer;
-  color: #77747e;
+  color: #9b98a5;
 }
 
 .usage-tab[aria-selected="true"] {
@@ -1272,6 +1286,20 @@ a.resource-link--primary:hover {
 }
 
 .usage-panel[hidden] {
+  display: none;
+}
+
+.fallback-panel-label {
+  margin: 0;
+  border-bottom: 1px solid #35343b;
+  background: #18171c;
+  padding: 0.75rem 1.25rem;
+  color: #c5baff;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+}
+
+.terminal-card.tabs-ready .fallback-panel-label {
   display: none;
 }
 
@@ -1682,6 +1710,12 @@ a.resource-link--primary:hover {
 
   body {
     background: #fff;
+  }
+
+  [data-reveal],
+  [data-reveal].reveal-ready {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .section,

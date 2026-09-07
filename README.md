@@ -27,9 +27,17 @@ node --check static/js/i18n.js
 node --check static/js/main.js
 ```
 
+For optional end-to-end browser coverage (requires Playwright and Chrome or Chromium):
+
+```bash
+python3 tests/browser_qa.py
+```
+
 The tests verify section structure, official links, intentional Coming Soon resources,
 figure assets and alternative text, paper claims, author order, bilingual key parity,
-responsive CSS contracts, and accessible interaction hooks.
+responsive CSS contracts, and accessible interaction hooks. The browser QA covers the
+no-JavaScript fallback, language persistence and translated ARIA labels, pointer and
+keyboard interactions, modal focus containment, reduced motion, and viewport overflow.
 
 ## Content updates
 

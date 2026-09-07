@@ -9,6 +9,19 @@ ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "index.html"
 
 
+def contrast_ratio(foreground, background):
+    def luminance(value):
+        channels = [int(value[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+        linear = [
+            channel / 12.92 if channel <= 0.04045 else ((channel + 0.055) / 1.055) ** 2.4
+            for channel in channels
+        ]
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+    light, dark = sorted((luminance(foreground), luminance(background)), reverse=True)
+    return (light + 0.05) / (dark + 0.05)
+
+
 class SiteParser(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -16,6 +29,7 @@ class SiteParser(HTMLParser):
         self.links = []
         self.images = []
         self.i18n_keys = set()
+        self.i18n_aria_keys = set()
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
@@ -27,6 +41,8 @@ class SiteParser(HTMLParser):
             self.images.append(values)
         if values.get("data-i18n"):
             self.i18n_keys.add(values["data-i18n"])
+        if values.get("data-i18n-aria-label"):
+            self.i18n_aria_keys.add(values["data-i18n-aria-label"])
 
 
 class HomepageContractTests(unittest.TestCase):
@@ -69,6 +85,14 @@ class HomepageContractTests(unittest.TestCase):
                 continue
             self.assertTrue(image.get("alt", "").strip(), image)
 
+    def test_paper_figures_are_lazy_and_reserve_layout_space(self):
+        paper_images = [image for image in self.parser.images if "data-lightbox-target" not in image]
+        for image in paper_images:
+            self.assertEqual(image.get("loading"), "lazy", image.get("src"))
+            self.assertEqual(image.get("decoding"), "async", image.get("src"))
+            self.assertTrue(image.get("width", "").isdigit(), image.get("src"))
+            self.assertTrue(image.get("height", "").isdigit(), image.get("src"))
+
     def test_local_assets_resolve(self):
         for image in self.parser.images:
             src = image.get("src", "")
@@ -81,6 +105,15 @@ class HomepageContractTests(unittest.TestCase):
                 self.assertEqual(asset.read_bytes()[:8], b"\x89PNG\r\n\x1a\n", asset.name)
             if asset.suffix in {".jpg", ".jpeg"}:
                 self.assertEqual(asset.read_bytes()[:2], b"\xff\xd8", asset.name)
+            if asset.suffix == ".webp":
+                signature = asset.read_bytes()[:12]
+                self.assertEqual(signature[:4], b"RIFF", asset.name)
+                self.assertEqual(signature[8:], b"WEBP", asset.name)
+
+    def test_deployable_figure_payload_is_web_sized(self):
+        extensions = {".png", ".jpg", ".jpeg", ".webp"}
+        assets = [asset for asset in (ROOT / "static/images").iterdir() if asset.suffix in extensions]
+        self.assertLess(sum(asset.stat().st_size for asset in assets), 2_500_000)
 
     def test_favicon_is_declared_and_resolves(self):
         favicon = "static/images/favicon.svg"
@@ -90,6 +123,22 @@ class HomepageContractTests(unittest.TestCase):
     def test_claims_match_the_paper(self):
         for claim in ("59.0%", "+63.4%", "4.02×", "0.83", "0.43", "0.74", "0.24"):
             self.assertIn(claim, self.source)
+
+    def test_incident_story_does_not_merge_distinct_paper_cases(self):
+        catalog_source = (ROOT / "static/js/i18n.js").read_text(encoding="utf-8")
+        combined = self.source + catalog_source
+        for conflated_claim in (
+            "under two minutes",
+            "ranks the true CPU saturation only third",
+            "Feedback: Top-3 is correct",
+            "Proposal: atomic + reviewable",
+            "Result: Top-1 diagnosis",
+            "evolved harness reuses verified experience",
+            "两分钟内",
+        ):
+            self.assertNotIn(conflated_claim, combined)
+        self.assertIn("The SRE records the CPU-to-RemoteProcess propagation chain", self.source)
+        self.assertIn("the recorded experience leads the SRE", self.source)
 
     def test_authors_are_complete_and_ordered(self):
         authors = [
@@ -115,6 +164,17 @@ class HomepageContractTests(unittest.TestCase):
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertIn(":focus-visible", css)
 
+    def test_terminal_secondary_text_meets_wcag_aa_contrast(self):
+        css = (ROOT / "static/css/style.css").read_text(encoding="utf-8")
+        comment = re.search(r"\.code-comment\s*\{[^}]*color:\s*(#[0-9a-fA-F]{6})", css, re.S)
+        inactive_tab = re.search(r"(?m)^\.usage-tab \{([^}]*)\}", css, re.S)
+        self.assertIsNotNone(comment)
+        self.assertIsNotNone(inactive_tab)
+        tab_color = re.search(r"color:\s*(#[0-9a-fA-F]{6})", inactive_tab.group(1))
+        self.assertIsNotNone(tab_color)
+        self.assertGreaterEqual(contrast_ratio(comment.group(1), "#101014"), 4.5)
+        self.assertGreaterEqual(contrast_ratio(tab_color.group(1), "#18171c"), 4.5)
+
     def test_every_markup_i18n_key_has_both_languages(self):
         js_path = ROOT / "static/js/i18n.js"
         self.assertTrue(js_path.is_file())
@@ -125,7 +185,22 @@ class HomepageContractTests(unittest.TestCase):
         self.assertEqual(set(catalog), {"en", "zh"})
         self.assertEqual(set(catalog["en"]), set(catalog["zh"]))
         self.assertGreater(len(self.parser.i18n_keys), 40)
-        self.assertTrue(self.parser.i18n_keys.issubset(catalog["en"]))
+        markup_keys = self.parser.i18n_keys | self.parser.i18n_aria_keys
+        self.assertTrue(markup_keys.issubset(catalog["en"]))
+
+    def test_no_javascript_fallback_shows_both_usage_examples(self):
+        self.assertNotRegex(self.source, r'id="claude-panel"[^>]*\shidden(?:\s|>)')
+        self.assertIn('<h3 class="fallback-panel-label">Codex</h3>', self.source)
+        self.assertIn('<h3 class="fallback-panel-label">Claude Code</h3>', self.source)
+        js = (ROOT / "static/js/main.js").read_text(encoding="utf-8")
+        self.assertIn("panel.hidden = !selected", js)
+        self.assertIn("tabs.find", js)
+        self.assertIn("activate(selectedTab)", js)
+
+    def test_copy_feedback_has_a_live_region(self):
+        self.assertIn('role="status" aria-live="polite" data-copy-status', self.source)
+        js = (ROOT / "static/js/main.js").read_text(encoding="utf-8")
+        self.assertIn('querySelector("[data-copy-status]")', js)
 
     def test_interaction_hooks_and_fallbacks_exist(self):
         js_path = ROOT / "static/js/main.js"
@@ -139,6 +214,9 @@ class HomepageContractTests(unittest.TestCase):
             "Escape",
             "aria-expanded",
             "aria-selected",
+            'event.key === "Tab"',
+            'setAttribute("inert"',
+            'removeAttribute("inert"',
         ):
             self.assertIn(contract, js)
 
@@ -159,7 +237,9 @@ class HomepageContractTests(unittest.TestCase):
         readme = readme_path.read_text(encoding="utf-8")
         self.assertIn("python3 -m http.server 8000", readme)
         self.assertIn("python3 -m unittest discover -s tests -v", readme)
+        self.assertIn("python3 tests/browser_qa.py", readme)
         self.assertIn("https://arxiv.org/abs/2608.25661", readme)
+        self.assertTrue((ROOT / "tests/browser_qa.py").is_file())
 
 
 if __name__ == "__main__":
