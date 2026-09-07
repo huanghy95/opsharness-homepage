@@ -66,6 +66,30 @@ class HomepageContractTests(unittest.TestCase):
         for image in self.parser.images:
             self.assertTrue(image.get("alt", "").strip(), image)
 
+    def test_local_assets_resolve(self):
+        for image in self.parser.images:
+            src = image.get("src", "")
+            if src.startswith("static/"):
+                self.assertTrue((ROOT / src).is_file(), src)
+
+    def test_claims_match_the_paper(self):
+        for claim in ("59.0%", "+63.4%", "4.02×", "0.83", "0.43", "0.74", "0.24"):
+            self.assertIn(claim, self.source)
+
+    def test_authors_are_complete_and_ordered(self):
+        authors = [
+            "Haiyu Huang",
+            "Jiewei Lyu",
+            "Zhihan Jiang",
+            "Jinyang Liu",
+            "Xiao He",
+            "Tieying Zhang",
+            "Wu Xiang",
+            "Michael R. Lyu",
+        ]
+        positions = [self.source.index(author) for author in authors]
+        self.assertEqual(positions, sorted(positions))
+
 
 if __name__ == "__main__":
     unittest.main()
