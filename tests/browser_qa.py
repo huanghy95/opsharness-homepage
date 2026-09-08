@@ -123,6 +123,9 @@ def run():
             "Verification",
             "Self-Evolve",
         ]
+        assert page.locator(".comparison-card--accent p").evaluate(
+            "node => getComputedStyle(node).color"
+        ) == "rgb(245, 242, 255)"
         assert_no_overflow(page)
 
         page.evaluate("localStorage.setItem('opsharness-language', 'invalid')")

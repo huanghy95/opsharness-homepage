@@ -8,14 +8,41 @@ Self-Evolving Harness for Root Cause Analysis.”
 
 ## Local preview
 
-From the `OpsHarness-Arxiv` workspace:
+To review the current feature branch before it is merged, serve the isolated worktree:
 
 ```bash
-cd homepage/ops_harness_homepage
+cd /Users/huanghaiyu/Workspace/OpsHarness-Arxiv/homepage/ops_harness_homepage/.worktrees/opsharness-homepage
 python3 -m http.server 8000
 ```
 
-Open <http://127.0.0.1:8000/>. Stop the server with `Ctrl+C`.
+Open <http://127.0.0.1:8000/>. Stop the server with `Ctrl+C`. If port 8000 is
+already occupied, use another port in both the command and URL.
+
+## Review this revision
+
+1. Confirm the hero uses the short title, shows five capabilities including
+   `Self-Evolve`, and does not display `Individual Researcher`.
+2. In **Overview**, confirm the narrative progresses from capable general models to
+   the RCA harness gap and then to verified self-evolution.
+3. Confirm the violet self-evolution card has clearly readable body text.
+4. Confirm the compact superpowers figure and the `moti_v2` motivation figure are
+   both framed and do not dominate a full viewport.
+5. In **Method**, confirm the architecture figure is bounded and the
+   `self-evolveV2` figure explains trajectory mining, proposal synthesis, and staged
+   verification.
+6. In **Results**, confirm Table II contains four backbone groups and six framework
+   rows per group. On a narrow window, scroll the table inside its frame and verify
+   that the framework column remains fixed.
+7. Toggle **中文**. Prose should switch to Chinese; figure text, model/framework
+   names, metrics, commands, and BibTeX should remain English.
+8. Open several figures, then close the lightbox with both its Close button and the
+   `Escape` key.
+
+Source mapping for the reviewed assets and results:
+
+- `paper/figs/moti_v2.pdf` → `static/images/motivation-case.webp`
+- `paper/figs/self-evolveV2.pdf` → `static/images/self-evolve-loop.webp`
+- `paper/tabs/exp_1.tex` → complete semantic HTML Table II
 
 ## Validation
 
@@ -34,10 +61,12 @@ python3 tests/browser_qa.py
 ```
 
 The tests verify section structure, official links, intentional Coming Soon resources,
-figure assets and alternative text, paper claims, author order, bilingual key parity,
-responsive CSS contracts, and accessible interaction hooks. The browser QA covers the
-no-JavaScript fallback, language persistence and translated ARIA labels, pointer and
-keyboard interactions, modal focus containment, reduced motion, and viewport overflow.
+figure assets and alternative text, paper claims, all 24 Table II rows, author order,
+bilingual key parity, responsive CSS contracts, contrast, and accessible interaction
+hooks. The browser QA covers the no-JavaScript fallback, language persistence and
+translated ARIA labels, pointer and keyboard interactions, modal focus containment,
+internal table scrolling, sticky framework labels, reduced motion, and viewport
+overflow.
 
 ## Content updates
 
