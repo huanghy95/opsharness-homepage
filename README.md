@@ -86,6 +86,9 @@ step is required.
 
 GitHub repository: <https://github.com/huanghy95/opsharness-homepage>
 
+Current deployment status and domain purchase instructions (Chinese):
+[docs/deployment.md](docs/deployment.md).
+
 In **Settings → Pages**, select **Deploy from a branch**, **main**, and **/ (root)**.
 The default public URL, once Pages is enabled and the deployment succeeds, is
 <https://huanghy95.github.io/opsharness-homepage/>. GitHub Pages uses `_config.yml`
