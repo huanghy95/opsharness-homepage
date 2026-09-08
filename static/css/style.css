@@ -1218,7 +1218,7 @@ a.resource-link--primary:hover {
   font-size: 0.68rem;
 }
 
-.results-table thead th:first-child,
+.results-table thead > tr:first-child > th:first-child,
 .results-table tbody tr:not(.results-table__backbone) > th:first-child {
   position: sticky;
   left: 0;
@@ -1230,7 +1230,7 @@ a.resource-link--primary:hover {
   text-align: left;
 }
 
-.results-table thead th:first-child {
+.results-table thead > tr:first-child > th:first-child {
   z-index: 4;
   background: #ded6f7;
 }

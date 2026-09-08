@@ -119,6 +119,14 @@ def run():
             )
             == "sticky"
         )
+        metric_header_widths = page.locator(
+            ".results-table thead tr:nth-child(3) th"
+        ).evaluate_all(
+            "nodes => nodes.slice(0, 2).map(node => node.getBoundingClientRect().width)"
+        )
+        assert abs(metric_header_widths[0] - metric_header_widths[1]) < 1, (
+            metric_header_widths
+        )
         assert page.locator(".visual-legend span").all_text_contents() == [
             "Skills",
             "Knowledge",
