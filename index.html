@@ -132,6 +132,77 @@
           <article><span class="result-label" data-i18n="results.verifyLabel">Verification matters</span><strong>37%</strong><p data-i18n="results.verifyBody">of evolution proposals are rejected; unverified evolution finishes at only 0.33 A@1.</p></article>
           <article><span class="result-label" data-i18n="results.industryLabel">Industrial deployment</span><strong>0.74 <small>vs 0.24</small></strong><p data-i18n="results.industryBody">Average A@1 for OpsHarness versus Direct across six production configurations.</p></article>
         </div>
+        <div class="results-table-shell">
+          <header class="results-table-heading">
+            <div><p class="section-number" data-i18n="results.tableKicker">Complete benchmark results</p><h3 data-i18n="results.tableTitle">24 configurations across two benchmarks and six sub-datasets.</h3></div>
+            <p data-i18n="results.tableIntro">OpsHarness is evaluated with four model backbones. Specialized RCA agents are marked †; within each backbone, the OpsHarness row is emphasized.</p>
+          </header>
+          <div class="results-table-scroll" tabindex="0" role="region" aria-label="Scrollable complete benchmark results" data-i18n-aria-label="aria.resultsTable">
+            <table class="results-table">
+              <caption class="sr-only" data-i18n="results.tableCaption">Overall effectiveness of 24 configurations across OpenRCA and RCAEval.</caption>
+              <thead>
+                <tr>
+                  <th rowspan="3" scope="col">Framework</th>
+                  <th colspan="9" scope="colgroup">OpenRCA</th>
+                  <th colspan="9" scope="colgroup">RCAEval</th>
+                  <th rowspan="3" scope="col">Final<br>A@1</th>
+                </tr>
+                <tr>
+                  <th colspan="3" scope="colgroup">Telecom</th>
+                  <th colspan="3" scope="colgroup">Bank</th>
+                  <th colspan="3" scope="colgroup">Market</th>
+                  <th colspan="3" scope="colgroup">Online Boutique</th>
+                  <th colspan="3" scope="colgroup">Sock Shop</th>
+                  <th colspan="3" scope="colgroup">Train Ticket</th>
+                </tr>
+                <tr>
+                  <th scope="col">A@1</th><th scope="col">A@3</th><th scope="col">Avg</th>
+                  <th scope="col">A@1</th><th scope="col">A@3</th><th scope="col">Avg</th>
+                  <th scope="col">A@1</th><th scope="col">A@3</th><th scope="col">Avg</th>
+                  <th scope="col">A@1</th><th scope="col">A@3</th><th scope="col">Avg</th>
+                  <th scope="col">A@1</th><th scope="col">A@3</th><th scope="col">Avg</th>
+                  <th scope="col">A@1</th><th scope="col">A@3</th><th scope="col">Avg</th>
+                </tr>
+              </thead>
+              <tbody data-backbone="gpt-5.5">
+                <tr class="results-table__backbone"><th colspan="20" scope="rowgroup">GPT-5.5</th></tr>
+                <tr data-framework="rca-agent"><th scope="row">RCA-Agent<sup>†</sup></th><td>36.4</td><td>45.5</td><td>55.0</td><td>35.7</td><td>64.3</td><td>65.0</td><td>23.2</td><td>53.6</td><td>55.0</td><td>0.0</td><td>11.1</td><td>46.0</td><td>5.6</td><td>5.6</td><td>29.0</td><td>0.0</td><td>0.0</td><td>24.0</td><td>16.8</td></tr>
+                <tr data-framework="mabc"><th scope="row">mABC<sup>†</sup></th><td>9.1</td><td>18.2</td><td>14.0</td><td>10.7</td><td>21.4</td><td>35.0</td><td>3.1</td><td>9.8</td><td>32.0</td><td>16.7</td><td>33.3</td><td>76.0</td><td>11.1</td><td>22.2</td><td>61.0</td><td>5.6</td><td>11.1</td><td>61.0</td><td>9.4</td></tr>
+                <tr data-framework="direct"><th scope="row">Codex (Direct)</th><td>54.5</td><td>54.5</td><td>64.0</td><td>57.1</td><td>64.3</td><td>72.0</td><td>23.2</td><td>46.4</td><td>59.0</td><td>66.7</td><td>83.3</td><td>95.0</td><td>61.1</td><td>77.8</td><td>89.0</td><td>44.4</td><td>72.2</td><td>83.0</td><td>51.2</td></tr>
+                <tr data-framework="icl"><th scope="row">Codex (ICL)</th><td>27.3</td><td>36.4</td><td>50.0</td><td>46.4</td><td>53.6</td><td>65.0</td><td>20.0</td><td>40.0</td><td>49.0</td><td>55.6</td><td>77.8</td><td>93.0</td><td>61.1</td><td>61.1</td><td>85.0</td><td>61.1</td><td>88.9</td><td>94.0</td><td>45.3</td></tr>
+                <tr data-framework="opsharness-no-evolve"><th scope="row">OpsHarness (no-evolve)</th><td>54.5</td><td>54.5</td><td>64.0</td><td>46.4</td><td>57.1</td><td>62.0</td><td>26.8</td><td>43.3</td><td>58.0</td><td>66.7</td><td>72.2</td><td>91.0</td><td>72.2</td><td>72.2</td><td>91.0</td><td>50.0</td><td>77.8</td><td>89.0</td><td>52.8</td></tr>
+                <tr class="results-table__ours" data-framework="opsharness"><th scope="row">OpsHarness</th><td>72.7</td><td>72.7</td><td>77.0</td><td>64.2</td><td>71.4</td><td>78.0</td><td>37.1</td><td>66.5</td><td>72.0</td><td>72.2</td><td>88.9</td><td>96.0</td><td>77.8</td><td>88.9</td><td>93.0</td><td>72.2</td><td>94.4</td><td>96.0</td><td>66.0</td></tr>
+              </tbody>
+              <tbody data-backbone="claude-sonnet-4.6">
+                <tr class="results-table__backbone"><th colspan="20" scope="rowgroup">Claude Sonnet 4.6</th></tr>
+                <tr data-framework="rca-agent"><th scope="row">RCA-Agent<sup>†</sup></th><td>9.1</td><td>18.2</td><td>32.0</td><td>53.6</td><td>67.9</td><td>79.0</td><td>16.5</td><td>33.5</td><td>55.0</td><td>11.1</td><td>22.2</td><td>59.0</td><td>5.6</td><td>5.6</td><td>29.0</td><td>0.0</td><td>5.6</td><td>44.0</td><td>16.0</td></tr>
+                <tr data-framework="mabc"><th scope="row">mABC<sup>†</sup></th><td>0.0</td><td>0.0</td><td>0.0</td><td>3.6</td><td>25.0</td><td>40.0</td><td>3.1</td><td>6.7</td><td>30.0</td><td>11.1</td><td>33.3</td><td>76.0</td><td>11.1</td><td>11.1</td><td>59.0</td><td>5.6</td><td>22.2</td><td>69.0</td><td>5.8</td></tr>
+                <tr data-framework="direct"><th scope="row">Claude Code (Direct)</th><td>36.4</td><td>45.5</td><td>55.0</td><td>24.2</td><td>36.3</td><td>61.0</td><td>17.0</td><td>26.3</td><td>38.0</td><td>38.9</td><td>61.1</td><td>85.0</td><td>27.8</td><td>44.4</td><td>76.0</td><td>16.7</td><td>22.2</td><td>76.0</td><td>26.8</td></tr>
+                <tr data-framework="icl"><th scope="row">Claude Code (ICL)</th><td>45.5</td><td>54.5</td><td>64.0</td><td>21.4</td><td>39.3</td><td>58.0</td><td>26.7</td><td>36.7</td><td>49.5</td><td>44.4</td><td>72.2</td><td>89.0</td><td>27.8</td><td>44.4</td><td>72.0</td><td>38.9</td><td>55.6</td><td>76.0</td><td>34.1</td></tr>
+                <tr data-framework="opsharness-no-evolve"><th scope="row">OpsHarness (no-evolve)</th><td>36.4</td><td>63.6</td><td>73.0</td><td>39.3</td><td>46.4</td><td>61.0</td><td>28.6</td><td>35.7</td><td>50.0</td><td>38.9</td><td>77.8</td><td>89.0</td><td>33.3</td><td>50.0</td><td>79.0</td><td>50.0</td><td>72.2</td><td>89.0</td><td>37.8</td></tr>
+                <tr class="results-table__ours" data-framework="opsharness"><th scope="row">OpsHarness</th><td>63.6</td><td>63.6</td><td>73.0</td><td>57.1</td><td>63.7</td><td>81.9</td><td>35.7</td><td>64.2</td><td>72.0</td><td>61.1</td><td>83.3</td><td>95.0</td><td>55.6</td><td>77.8</td><td>89.0</td><td>61.1</td><td>77.8</td><td>93.0</td><td>55.7</td></tr>
+              </tbody>
+              <tbody data-backbone="glm-5.2">
+                <tr class="results-table__backbone"><th colspan="20" scope="rowgroup">GLM-5.2</th></tr>
+                <tr data-framework="rca-agent"><th scope="row">RCA-Agent<sup>†</sup></th><td>36.4</td><td>54.5</td><td>59.0</td><td>60.7</td><td>64.3</td><td>77.0</td><td>13.4</td><td>23.7</td><td>40.5</td><td>16.7</td><td>22.2</td><td>56.0</td><td>16.7</td><td>16.7</td><td>33.0</td><td>0.0</td><td>0.0</td><td>28.0</td><td>24.0</td></tr>
+                <tr data-framework="mabc"><th scope="row">mABC<sup>†</sup></th><td>0.0</td><td>9.1</td><td>14.0</td><td>0.0</td><td>17.9</td><td>34.0</td><td>6.7</td><td>6.7</td><td>20.5</td><td>11.1</td><td>33.3</td><td>74.0</td><td>11.1</td><td>11.1</td><td>52.0</td><td>0.0</td><td>11.1</td><td>59.0</td><td>4.8</td></tr>
+                <tr data-framework="direct"><th scope="row">Codex (Direct)</th><td>54.5</td><td>63.6</td><td>68.0</td><td>57.1</td><td>57.1</td><td>67.0</td><td>26.8</td><td>50.0</td><td>65.0</td><td>38.9</td><td>77.8</td><td>93.0</td><td>44.4</td><td>72.2</td><td>89.0</td><td>55.6</td><td>72.2</td><td>87.0</td><td>46.2</td></tr>
+                <tr data-framework="icl"><th scope="row">Codex (ICL)</th><td>36.4</td><td>36.4</td><td>45.0</td><td>46.4</td><td>46.4</td><td>55.0</td><td>16.7</td><td>23.3</td><td>36.4</td><td>61.1</td><td>83.3</td><td>95.0</td><td>50.0</td><td>77.8</td><td>91.0</td><td>50.0</td><td>77.8</td><td>87.0</td><td>43.4</td></tr>
+                <tr data-framework="opsharness-no-evolve"><th scope="row">OpsHarness (no-evolve)</th><td>54.5</td><td>63.6</td><td>80.0</td><td>57.1</td><td>64.3</td><td>74.0</td><td>28.6</td><td>42.9</td><td>52.0</td><td>66.7</td><td>88.9</td><td>89.0</td><td>44.4</td><td>55.6</td><td>74.0</td><td>55.6</td><td>88.9</td><td>94.0</td><td>51.2</td></tr>
+                <tr class="results-table__ours" data-framework="opsharness"><th scope="row">OpsHarness</th><td>72.7</td><td>81.8</td><td>87.0</td><td>57.1</td><td>64.3</td><td>74.0</td><td>42.9</td><td>50.0</td><td>61.0</td><td>77.8</td><td>88.9</td><td>89.0</td><td>55.6</td><td>66.7</td><td>76.0</td><td>88.9</td><td>94.4</td><td>98.0</td><td>65.8</td></tr>
+              </tbody>
+              <tbody data-backbone="deepseek-v4">
+                <tr class="results-table__backbone"><th colspan="20" scope="rowgroup">DeepSeek-V4</th></tr>
+                <tr data-framework="rca-agent"><th scope="row">RCA-Agent<sup>†</sup></th><td>45.5</td><td>45.5</td><td>50.0</td><td>28.6</td><td>35.7</td><td>47.0</td><td>9.8</td><td>9.8</td><td>26.0</td><td>5.6</td><td>5.6</td><td>35.0</td><td>0.0</td><td>5.6</td><td>26.0</td><td>0.0</td><td>0.0</td><td>22.0</td><td>14.9</td></tr>
+                <tr data-framework="mabc"><th scope="row">mABC<sup>†</sup></th><td>0.0</td><td>0.0</td><td>5.0</td><td>3.6</td><td>14.3</td><td>32.0</td><td>0.0</td><td>3.1</td><td>16.0</td><td>11.1</td><td>33.3</td><td>72.0</td><td>0.0</td><td>5.6</td><td>43.0</td><td>0.0</td><td>0.0</td><td>48.0</td><td>2.5</td></tr>
+                <tr data-framework="direct"><th scope="row">Codex (Direct)</th><td>18.2</td><td>27.3</td><td>41.0</td><td>32.1</td><td>39.3</td><td>52.0</td><td>10.3</td><td>23.2</td><td>39.0</td><td>27.8</td><td>44.4</td><td>76.0</td><td>22.2</td><td>27.8</td><td>63.0</td><td>11.1</td><td>22.2</td><td>59.0</td><td>20.3</td></tr>
+                <tr data-framework="icl"><th scope="row">Codex (ICL)</th><td>36.4</td><td>36.4</td><td>41.0</td><td>28.6</td><td>39.3</td><td>50.0</td><td>20.0</td><td>30.0</td><td>42.8</td><td>61.1</td><td>72.2</td><td>91.0</td><td>22.2</td><td>33.3</td><td>61.0</td><td>16.7</td><td>38.9</td><td>67.0</td><td>30.8</td></tr>
+                <tr data-framework="opsharness-no-evolve"><th scope="row">OpsHarness (no-evolve)</th><td>27.2</td><td>45.5</td><td>46.0</td><td>35.7</td><td>46.4</td><td>61.0</td><td>21.4</td><td>28.6</td><td>50.0</td><td>44.4</td><td>53.3</td><td>76.0</td><td>27.8</td><td>50.0</td><td>80.0</td><td>33.3</td><td>66.7</td><td>72.0</td><td>31.6</td></tr>
+                <tr class="results-table__ours" data-framework="opsharness"><th scope="row">OpsHarness</th><td>45.5</td><td>63.6</td><td>68.0</td><td>46.4</td><td>50.0</td><td>64.0</td><td>28.6</td><td>42.9</td><td>60.0</td><td>53.3</td><td>73.3</td><td>80.0</td><td>50.0</td><td>72.2</td><td>90.0</td><td>66.7</td><td>77.8</td><td>89.0</td><td>48.4</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <div class="results-grid" data-reveal>
           <figure class="paper-figure"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Finding 1" data-i18n-aria-label="aria.expandFinding1" aria-describedby="finding-1-caption"><img src="static/images/evolution-curve.png" width="975" height="530" loading="lazy" decoding="async" alt="Accuracy curves over twelve continuous-diagnosis windows showing verified OpsHarness improving while no-evolve stays flat and no-verify regresses"></button></div><figcaption id="finding-1-caption"><span>Finding 1</span><span data-i18n="results.caption1">Verified evolution steadily raises accuracy across all four backbones.</span></figcaption></figure>
           <figure class="paper-figure"><div class="figure-frame"><button class="figure-button" type="button" data-lightbox-image aria-label="Expand Finding 2" data-i18n-aria-label="aria.expandFinding2" aria-describedby="finding-2-caption"><img src="static/images/industrial-results.png" width="1123" height="435" loading="lazy" decoding="async" alt="Industrial A@1 results showing OpsHarness outperforming Direct across Codex and Open Code configurations"></button></div><figcaption id="finding-2-caption"><span>Finding 2</span><span data-i18n="results.caption2">The gains transfer to a real production system and an open agent stack.</span></figcaption></figure>

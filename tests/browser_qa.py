@@ -48,7 +48,36 @@ def scroll_through(page):
 
 
 def assert_no_overflow(page):
-    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+    metrics = page.evaluate(
+        """() => ({
+            documentWidth: document.documentElement.scrollWidth,
+            viewportWidth: window.innerWidth,
+            offenders: [...document.querySelectorAll("body *")]
+                .map(node => {
+                    const rect = node.getBoundingClientRect();
+                    return {
+                        tag: node.tagName,
+                        className: String(node.className || ""),
+                        left: Math.round(rect.left),
+                        right: Math.round(rect.right)
+                    };
+                })
+                .filter(item => item.left < -1 || item.right > window.innerWidth + 1)
+                .slice(0, 12)
+        })"""
+    )
+    assert metrics["documentWidth"] <= metrics["viewportWidth"], metrics
+
+
+def assert_table_scrolls_within_page(page):
+    scroller = page.locator(".results-table-scroll")
+    dimensions = scroller.evaluate(
+        "node => ({scrollWidth: node.scrollWidth, clientWidth: node.clientWidth})"
+    )
+    assert dimensions["scrollWidth"] > dimensions["clientWidth"], dimensions
+    scroller.evaluate("node => { node.scrollLeft = 240; }")
+    assert scroller.evaluate("node => node.scrollLeft") > 0
+    assert_no_overflow(page)
 
 
 def launch_browser(playwright):
@@ -78,6 +107,22 @@ def run():
 
         assert page.title() == "OpsHarness — A Self-Evolving Harness for Root Cause Analysis"
         assert page.locator("html").get_attribute("lang") == "en"
+        assert page.locator("#evolution").count() == 0
+        assert page.locator(".results-table").count() == 1
+        assert page.locator("[data-framework]").count() == 24
+        assert (
+            page.locator(".results-table tbody tr[data-framework] th").first.evaluate(
+                "node => getComputedStyle(node).position"
+            )
+            == "sticky"
+        )
+        assert page.locator(".visual-legend span").all_text_contents() == [
+            "Skills",
+            "Knowledge",
+            "Tools",
+            "Verification",
+            "Self-Evolve",
+        ]
         assert_no_overflow(page)
 
         page.evaluate("localStorage.setItem('opsharness-language', 'invalid')")
@@ -146,7 +191,7 @@ def run():
         assert static_page.locator("[data-reveal]").evaluate_all(
             "nodes => nodes.every(node => getComputedStyle(node).opacity === '1')"
         )
-        assert_no_overflow(static_page)
+        assert_table_scrolls_within_page(static_page)
         no_javascript.close()
 
         mobile = browser.new_context(viewport={"width": 390, "height": 844})
@@ -161,7 +206,7 @@ def run():
         expect(mobile_page.locator("[data-nav-toggle]")).to_have_attribute(
             "aria-expanded", "false"
         )
-        assert_no_overflow(mobile_page)
+        assert_table_scrolls_within_page(mobile_page)
         mobile.close()
 
         reduced = browser.new_context(

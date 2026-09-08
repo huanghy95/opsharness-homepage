@@ -31,7 +31,7 @@ def result_row(source, backbone, framework):
     if body is None:
         return []
     row = re.search(
-        rf'<tr data-framework="{re.escape(framework)}".*?</tr>',
+        rf'<tr[^>]*data-framework="{re.escape(framework)}"[^>]*>.*?</tr>',
         body.group(0),
         re.S,
     )
@@ -182,7 +182,7 @@ class HomepageContractTests(unittest.TestCase):
         ):
             self.assertIn(f'data-backbone="{backbone}"', self.source)
         self.assertEqual(
-            len(re.findall(r'<tr data-framework="[^"]+"', self.source)),
+            len(re.findall(r'<tr[^>]*data-framework="[^"]+"', self.source)),
             24,
         )
         for backbone in (
