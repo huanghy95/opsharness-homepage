@@ -78,7 +78,7 @@ Add test_full_table_ii_is_rendered_as_semantic_html. Assert:
 - One table with class results-table.
 - Four tbody groups with data-backbone values gpt-5.5, claude-sonnet-4.6, glm-5.2, deepseek-v4.
 - Exactly 24 framework data rows.
-- Every framework data row has 20 numeric cells after its row header.
+- Every framework data row has 19 numeric cells after its row header, for 20 cells total.
 - Four sentinel OpsHarness rows exactly match:
 
     gpt-5.5:
@@ -505,4 +505,3 @@ If review fixes touched code, include those exact files in a separate commit nam
 **Step 7: Present integration choices**
 
 Use finishing-a-development-branch. Report the exact worktree path, preview command, verification results, and branch/commit state. Do not merge to main without the user selecting the merge option.
-

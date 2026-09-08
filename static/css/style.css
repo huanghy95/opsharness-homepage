@@ -279,9 +279,9 @@ button {
 }
 
 .hero h1 {
-  max-width: 780px;
-  font-size: clamp(3.3rem, 5.7vw, 5.85rem);
-  line-height: 0.94;
+  max-width: 720px;
+  font-size: clamp(3rem, 4.7vw, 4.75rem);
+  line-height: 0.98;
 }
 
 .hero h1 em,
@@ -530,7 +530,7 @@ a.resource-link--primary:hover {
   bottom: 28px;
   left: 26px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.45rem;
 }
 
@@ -538,7 +538,7 @@ a.resource-link--primary:hover {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
-  padding: 0.42rem 0.65rem;
+  padding: 0.42rem 0.25rem;
   color: var(--muted);
   font-family: var(--mono);
   font-size: 0.58rem;
@@ -608,7 +608,6 @@ a.resource-link--primary:hover {
 }
 
 .section--why,
-.section--evolution,
 .section--paper {
   background: var(--surface);
 }
@@ -692,14 +691,17 @@ a.resource-link--primary:hover {
 
 .comparison-card--accent {
   border-color: var(--violet-dark);
-  background: var(--violet);
+  background: #5138c9;
   color: #fff;
   box-shadow: 8px 8px 0 var(--violet-soft);
 }
 
-.comparison-card--accent .card-label,
 .comparison-card--accent p {
-  color: rgba(255, 255, 255, 0.8);
+  color: #f5f2ff;
+}
+
+.comparison-card--accent .card-label {
+  color: #e4ddff;
 }
 
 .comparison-card h3,
@@ -746,6 +748,16 @@ a.resource-link--primary:hover {
   margin-top: 5rem;
 }
 
+.paper-figure--bounded {
+  width: 100%;
+  max-width: 760px;
+}
+
+.paper-figure--method {
+  max-width: 1040px;
+  margin: 4rem auto 0;
+}
+
 .figure-frame {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -783,6 +795,90 @@ a.resource-link--primary:hover {
   font-weight: 750;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.editorial-media {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.58fr) minmax(0, 1.42fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  margin-top: clamp(5rem, 9vw, 8rem);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(3rem, 6vw, 5rem);
+}
+
+.editorial-media--figure-left {
+  grid-template-columns: minmax(0, 1.42fr) minmax(250px, 0.58fr);
+}
+
+.editorial-media--method {
+  grid-template-columns: minmax(280px, 0.66fr) minmax(0, 1.34fr);
+}
+
+.editorial-copy {
+  max-width: 470px;
+}
+
+.editorial-copy h3 {
+  margin: 0.8rem 0 1.1rem;
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+.editorial-copy > p:not(.section-number) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.editorial-copy .editorial-bridge {
+  margin-top: 1.2rem;
+  border-left: 3px solid var(--verified);
+  padding-left: 1rem;
+  color: var(--verified-dark);
+  font-weight: 700;
+}
+
+.evolution-steps {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.evolution-steps li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 0.8rem;
+  align-items: start;
+  border-top: 1px solid var(--line);
+  padding-top: 0.8rem;
+}
+
+.evolution-steps li > span {
+  color: var(--violet-dark);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.evolution-steps strong,
+.evolution-steps small {
+  display: block;
+}
+
+.evolution-steps strong {
+  font-size: 0.82rem;
+}
+
+.evolution-steps small {
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.72rem;
 }
 
 .plane-grid {
@@ -1462,6 +1558,9 @@ a.resource-link--primary:hover {
   }
 
   .section-heading--split,
+  .editorial-media,
+  .editorial-media--figure-left,
+  .editorial-media--method,
   .usage-grid,
   .paper-copy-grid,
   .citation-grid {
@@ -1469,17 +1568,9 @@ a.resource-link--primary:hover {
     gap: 2.5rem;
   }
 
-  .incident-story {
-    grid-template-columns: 1fr;
-  }
-
-  .story-arrow {
-    transform: rotate(90deg);
-    text-align: center;
-  }
-
-  .story-card {
-    min-height: 280px;
+  .editorial-copy,
+  .paper-figure--bounded {
+    max-width: none;
   }
 }
 
@@ -1530,7 +1621,7 @@ a.resource-link--primary:hover {
   }
 
   .hero h1 {
-    font-size: clamp(2.5rem, 12.3vw, 4rem);
+    font-size: clamp(2.35rem, 9vw, 3.35rem);
   }
 
   .hero-thesis {
@@ -1675,6 +1766,7 @@ a.resource-link--primary:hover {
     right: 14px;
     bottom: 20px;
     left: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .authors span:not(:last-child)::after {

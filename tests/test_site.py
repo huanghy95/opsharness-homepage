@@ -22,6 +22,28 @@ def contrast_ratio(foreground, background):
     return (light + 0.05) / (dark + 0.05)
 
 
+def result_row(source, backbone, framework):
+    body = re.search(
+        rf'<tbody data-backbone="{re.escape(backbone)}".*?</tbody>',
+        source,
+        re.S,
+    )
+    if body is None:
+        return []
+    row = re.search(
+        rf'<tr data-framework="{re.escape(framework)}".*?</tr>',
+        body.group(0),
+        re.S,
+    )
+    if row is None:
+        return []
+    cells = re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", row.group(0), re.S)
+    return [
+        re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", cell)).strip()
+        for cell in cells
+    ]
+
+
 class SiteParser(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -56,13 +78,26 @@ class HomepageContractTests(unittest.TestCase):
         expected = {
             "overview",
             "method",
-            "evolution",
             "results",
             "usage",
             "abstract",
             "citation",
         }
         self.assertTrue(expected.issubset(self.parser.ids))
+        self.assertNotIn("evolution", self.parser.ids)
+
+    def test_reviewed_hero_and_affiliations_are_exact(self):
+        self.assertIn(
+            "OpsHarness: <em>A Self-Evolving Harness</em> for Root Cause Analysis",
+            self.source,
+        )
+        for capability in ("Skills", "Knowledge", "Tools", "Verification", "Self-Evolve"):
+            self.assertIn(f"<span>{capability}</span>", self.source)
+        self.assertNotIn("Individual Researcher", self.source)
+        self.assertIn(
+            "The Chinese University of Hong Kong · ByteDance",
+            self.source,
+        )
 
     def test_official_paper_links_are_exact(self):
         hrefs = {link.get("href") for link in self.parser.links}
@@ -124,21 +159,71 @@ class HomepageContractTests(unittest.TestCase):
         for claim in ("59.0%", "+63.4%", "4.02×", "0.83", "0.43", "0.74", "0.24"):
             self.assertIn(claim, self.source)
 
-    def test_incident_story_does_not_merge_distinct_paper_cases(self):
+    def test_motivation_and_self_evolution_use_reviewed_paper_figures(self):
+        self.assertIn('src="static/images/motivation-case.webp"', self.source)
+        self.assertIn('src="static/images/self-evolve-loop.webp"', self.source)
+        self.assertNotIn('src="static/images/incident-learning.webp"', self.source)
+        self.assertNotIn('class="incident-story"', self.source)
+
+    def test_shift_copy_names_the_model_and_the_harness_gap(self):
         catalog_source = (ROOT / "static/js/i18n.js").read_text(encoding="utf-8")
         combined = self.source + catalog_source
-        for conflated_claim in (
-            "under two minutes",
-            "ranks the true CPU saturation only third",
-            "Feedback: Top-3 is correct",
-            "Proposal: atomic + reviewable",
-            "Result: Top-1 diagnosis",
-            "evolved harness reuses verified experience",
-            "两分钟内",
+        self.assertIn("General models are capable.", self.source)
+        self.assertIn("The RCA gap is a harness that learns.", self.source)
+        self.assertNotIn("The agent is capable.", combined)
+
+    def test_full_table_ii_is_rendered_as_semantic_html(self):
+        self.assertEqual(self.source.count('class="results-table"'), 1)
+        for backbone in (
+            "gpt-5.5",
+            "claude-sonnet-4.6",
+            "glm-5.2",
+            "deepseek-v4",
         ):
-            self.assertNotIn(conflated_claim, combined)
-        self.assertIn("The SRE records the CPU-to-RemoteProcess propagation chain", self.source)
-        self.assertIn("the recorded experience leads the SRE", self.source)
+            self.assertIn(f'data-backbone="{backbone}"', self.source)
+        self.assertEqual(
+            len(re.findall(r'<tr data-framework="[^"]+"', self.source)),
+            24,
+        )
+        for backbone in (
+            "gpt-5.5",
+            "claude-sonnet-4.6",
+            "glm-5.2",
+            "deepseek-v4",
+        ):
+            for framework in (
+                "rca-agent",
+                "mabc",
+                "direct",
+                "icl",
+                "opsharness-no-evolve",
+                "opsharness",
+            ):
+                self.assertEqual(len(result_row(self.source, backbone, framework)), 20)
+
+        sentinels = {
+            "gpt-5.5": (
+                "OpsHarness 72.7 72.7 77.0 64.2 71.4 78.0 37.1 66.5 72.0 "
+                "72.2 88.9 96.0 77.8 88.9 93.0 72.2 94.4 96.0 66.0"
+            ),
+            "claude-sonnet-4.6": (
+                "OpsHarness 63.6 63.6 73.0 57.1 63.7 81.9 35.7 64.2 72.0 "
+                "61.1 83.3 95.0 55.6 77.8 89.0 61.1 77.8 93.0 55.7"
+            ),
+            "glm-5.2": (
+                "OpsHarness 72.7 81.8 87.0 57.1 64.3 74.0 42.9 50.0 61.0 "
+                "77.8 88.9 89.0 55.6 66.7 76.0 88.9 94.4 98.0 65.8"
+            ),
+            "deepseek-v4": (
+                "OpsHarness 45.5 63.6 68.0 46.4 50.0 64.0 28.6 42.9 60.0 "
+                "53.3 73.3 80.0 50.0 72.2 90.0 66.7 77.8 89.0 48.4"
+            ),
+        }
+        for backbone, expected in sentinels.items():
+            self.assertEqual(
+                " ".join(result_row(self.source, backbone, "opsharness")),
+                expected,
+            )
 
     def test_authors_are_complete_and_ordered(self):
         authors = [
@@ -163,6 +248,30 @@ class HomepageContractTests(unittest.TestCase):
         self.assertIn("@media (max-width: 760px)", css)
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertIn(":focus-visible", css)
+        for token in (
+            ".editorial-media",
+            ".results-table-shell",
+            ".results-table",
+            "position: sticky",
+            "overflow-x: auto",
+        ):
+            self.assertIn(token, css)
+
+    def test_accent_card_body_meets_wcag_aa_contrast(self):
+        css = (ROOT / "static/css/style.css").read_text(encoding="utf-8")
+        card = re.search(
+            r"\.comparison-card--accent\s*\{[^}]*background:\s*(#[0-9a-fA-F]{6})",
+            css,
+            re.S,
+        )
+        body = re.search(
+            r"\.comparison-card--accent p\s*\{[^}]*color:\s*(#[0-9a-fA-F]{6})",
+            css,
+            re.S,
+        )
+        self.assertIsNotNone(card)
+        self.assertIsNotNone(body)
+        self.assertGreaterEqual(contrast_ratio(body.group(1), card.group(1)), 4.5)
 
     def test_terminal_secondary_text_meets_wcag_aa_contrast(self):
         css = (ROOT / "static/css/style.css").read_text(encoding="utf-8")
