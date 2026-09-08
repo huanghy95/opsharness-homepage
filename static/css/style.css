@@ -1147,6 +1147,17 @@ a.resource-link--primary:hover {
   font-size: 0.9rem;
 }
 
+.results-table-hint {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.65rem;
+  color: var(--violet-dark);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 .results-table-scroll {
   overflow-x: auto;
   border: 1px solid rgba(67, 43, 180, 0.3);

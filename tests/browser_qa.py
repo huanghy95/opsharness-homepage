@@ -110,6 +110,9 @@ def run():
         assert page.locator("#evolution").count() == 0
         assert page.locator(".results-table").count() == 1
         assert page.locator("[data-framework]").count() == 24
+        expect(page.locator(".results-table-hint")).to_have_text(
+            "Scroll horizontally to view all metrics →"
+        )
         assert (
             page.locator(".results-table tbody tr[data-framework] th").first.evaluate(
                 "node => getComputedStyle(node).position"
@@ -137,6 +140,9 @@ def run():
         expect(page.locator("nav")).to_have_attribute("aria-label", "主导航")
         expect(page.locator("[data-lightbox-image]").first).to_have_attribute(
             "aria-label", "展开图 1"
+        )
+        expect(page.locator(".results-table-hint")).to_have_text(
+            "横向滚动以查看全部指标 →"
         )
         assert page.locator("[data-lightbox-image] img").first.get_attribute("alt").startswith(
             "Illustration showing"

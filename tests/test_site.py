@@ -71,6 +71,7 @@ class HomepageContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.source = HTML.read_text(encoding="utf-8") if HTML.exists() else ""
+        cls.i18n_source = (ROOT / "static/js/i18n.js").read_text(encoding="utf-8")
         cls.parser = SiteParser()
         cls.parser.feed(cls.source)
 
@@ -184,6 +185,18 @@ class HomepageContractTests(unittest.TestCase):
 
     def test_full_table_ii_is_rendered_as_semantic_html(self):
         self.assertEqual(self.source.count('class="results-table"'), 1)
+        self.assertIn(
+            'class="results-table-hint" data-i18n="results.tableHint"',
+            self.source,
+        )
+        self.assertIn(
+            '"results.tableHint": "Scroll horizontally to view all metrics →"',
+            self.i18n_source,
+        )
+        self.assertIn(
+            '"results.tableHint": "横向滚动以查看全部指标 →"',
+            self.i18n_source,
+        )
         for backbone in (
             "gpt-5.5",
             "claude-sonnet-4.6",
