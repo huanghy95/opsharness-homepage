@@ -1,0 +1,6 @@
+# GitHub Pages copies the existing static homepage and assets.
+# Keep development documentation and tests out of the public site.
+exclude:
+  - README.md
+  - docs
+  - tests
