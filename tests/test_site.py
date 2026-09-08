@@ -104,6 +104,16 @@ class HomepageContractTests(unittest.TestCase):
         self.assertIn("https://arxiv.org/abs/2608.25661", hrefs)
         self.assertIn("https://arxiv.org/pdf/2608.25661", hrefs)
 
+    def test_official_title_is_preserved_in_metadata_and_bibtex(self):
+        official = (
+            "From General Agents to RCA Experts: "
+            "A Self-Evolving Harness for Root Cause Analysis"
+        )
+        self.assertIn(f"<title>{official}</title>", self.source)
+        self.assertIn(f'<meta property="og:title" content="{official}">', self.source)
+        self.assertIn(f'<meta name="twitter:title" content="{official}">', self.source)
+        self.assertIn(f"title={{{official}}}", self.source)
+
     def test_coming_soon_resources_are_not_links(self):
         self.assertIn('data-resource="code" aria-disabled="true"', self.source)
         self.assertIn('data-resource="demo" aria-disabled="true"', self.source)

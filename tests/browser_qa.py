@@ -105,7 +105,7 @@ def run():
         )
         page.goto(url, wait_until="networkidle")
 
-        assert page.title() == "OpsHarness — A Self-Evolving Harness for Root Cause Analysis"
+        assert page.title() == "From General Agents to RCA Experts: A Self-Evolving Harness for Root Cause Analysis"
         assert page.locator("html").get_attribute("lang") == "en"
         assert page.locator("#evolution").count() == 0
         assert page.locator(".results-table").count() == 1
