@@ -95,6 +95,9 @@ GitHub repository: <https://github.com/huanghy95/opsharness-homepage>
 Current deployment status and domain configuration (Chinese):
 [docs/deployment.md](docs/deployment.md).
 
+Search indexing status, Search Console access, and ongoing SEO maintenance (Chinese):
+[docs/search-discovery.md](docs/search-discovery.md).
+
 GitHub Pages is configured to publish from **main → / (root)**.
 The live site is <https://opsharness.org/>, with domain ownership verified and HTTPS
 enforced. Both the apex and `www` domains are covered by the certificate.
