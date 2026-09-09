@@ -89,15 +89,13 @@ GitHub repository: <https://github.com/huanghy95/opsharness-homepage>
 Current deployment status and domain purchase instructions (Chinese):
 [docs/deployment.md](docs/deployment.md).
 
-In **Settings → Pages**, select **Deploy from a branch**, **main**, and **/ (root)**.
-The default public URL, once Pages is enabled and the deployment succeeds, is
-<https://huanghy95.github.io/opsharness-homepage/>. GitHub Pages uses `_config.yml`
+GitHub Pages is configured to publish from **main → / (root)**, with HTTPS enabled.
+The public URL is <https://huanghy95.github.io/opsharness-homepage/>.
+GitHub Pages uses `_config.yml`
 to exclude development documentation and tests from the published output.
 
-The repository is private. GitHub Pages requires an eligible paid plan (such as
-GitHub Pro) for private repositories; GitHub Free supports Pages on public
-repositories. Repository visibility and website visibility are separate: this
-homepage is intended to be public.
+The repository is public, as authorized on 2026-09-09, and uses free GitHub Pages.
+No custom domain is configured.
 
 The current reviewed local checkout is on `codex/opsharness-homepage`. Publish
 subsequent committed changes from that checkout with:
