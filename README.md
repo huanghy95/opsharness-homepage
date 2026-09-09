@@ -3,8 +3,14 @@
 Static bilingual homepage for the paper “From General Agents to RCA Experts: A
 Self-Evolving Harness for Root Cause Analysis.”
 
+- **Project website: [opsharness.org](https://opsharness.org/)**
 - arXiv: <https://arxiv.org/abs/2608.25661>
 - PDF: <https://arxiv.org/pdf/2608.25661>
+
+OpsHarness is a self-evolving external harness for LLM-based root cause analysis
+(RCA). The website presents its method, benchmark results, and usage examples.
+This repository contains the paper website only; the OpsHarness implementation
+and demo are coming soon.
 
 ## Local preview
 

@@ -1,6 +1,7 @@
 import json
 import re
 import unittest
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -119,10 +120,39 @@ class HomepageContractTests(unittest.TestCase):
             "From General Agents to RCA Experts: "
             "A Self-Evolving Harness for Root Cause Analysis"
         )
-        self.assertIn(f"<title>{official}</title>", self.source)
-        self.assertIn(f'<meta property="og:title" content="{official}">', self.source)
-        self.assertIn(f'<meta name="twitter:title" content="{official}">', self.source)
+        branded = "OpsHarness | Self-Evolving Harness for Root Cause Analysis"
+        self.assertIn(f"<title>{branded}</title>", self.source)
+        self.assertIn(f'<meta property="og:title" content="{branded}">', self.source)
+        self.assertIn(f'<meta name="twitter:title" content="{branded}">', self.source)
+        self.assertIn(f'<meta name="citation_title" content="{official}">', self.source)
         self.assertIn(f"title={{{official}}}", self.source)
+
+    def test_search_discovery_files_use_the_canonical_url(self):
+        robots = (ROOT / "robots.txt").read_text()
+        self.assertIn("User-agent: *\nAllow: /", robots)
+        self.assertIn("Sitemap: https://opsharness.org/sitemap.xml", robots)
+        self.assertNotIn("Disallow:", robots)
+        tree = ET.parse(ROOT / "sitemap.xml")
+        namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        urls = tree.findall("sm:url/sm:loc", namespace)
+        self.assertEqual([node.text for node in urls], ["https://opsharness.org/"])
+        self.assertNotRegex(self.source, r'content="[^"\n]*(?:noindex|nofollow)')
+
+    def test_structured_data_identifies_the_website_and_paper(self):
+        scripts = re.findall(r'<script type="application/ld\+json">(.*?)</script>', self.source, re.S)
+        self.assertEqual(len(scripts), 1)
+        data = json.loads(scripts[0])
+        self.assertEqual(data["@context"], "https://schema.org")
+        entities = {item["@type"]: item for item in data["@graph"]}
+        self.assertEqual(entities["WebSite"]["name"], "OpsHarness")
+        self.assertEqual(entities["WebSite"]["url"], "https://opsharness.org/")
+        self.assertEqual(entities["WebPage"]["mainEntity"]["@id"], entities["ScholarlyArticle"]["@id"])
+        article = entities["ScholarlyArticle"]
+        self.assertEqual(article["url"], "https://arxiv.org/abs/2608.25661")
+        self.assertEqual(article["datePublished"], "2026-08-26")
+        expected_authors = ["Haiyu Huang", "Jiewei Lyu", "Zhihan Jiang", "Jinyang Liu", "Xiao He", "Tieying Zhang", "Wu Xiang", "Michael R. Lyu"]
+        self.assertEqual([person["name"] for person in article["author"]], expected_authors)
+        self.assertEqual(re.findall(r'<meta name="citation_author" content="([^"]+)">', self.source), expected_authors)
 
     def test_coming_soon_resources_are_not_links(self):
         self.assertIn('data-resource="code" aria-disabled="true"', self.source)
