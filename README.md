@@ -86,16 +86,19 @@ step is required.
 
 GitHub repository: <https://github.com/huanghy95/opsharness-homepage>
 
-Current deployment status and domain purchase instructions (Chinese):
+Current deployment status and domain configuration (Chinese):
 [docs/deployment.md](docs/deployment.md).
 
-GitHub Pages is configured to publish from **main → / (root)**, with HTTPS enabled.
-The public URL is <https://huanghy95.github.io/opsharness-homepage/>.
+GitHub Pages is configured to publish from **main → / (root)**.
+The custom domain is <https://opsharness.org/>. See the deployment document for
+DNS verification and HTTPS status.
+The original <https://huanghy95.github.io/opsharness-homepage/> address redirects
+to the custom domain once the binding is active.
 GitHub Pages uses `_config.yml`
 to exclude development documentation and tests from the published output.
 
 The repository is public, as authorized on 2026-09-09, and uses free GitHub Pages.
-No custom domain is configured.
+The custom domain `opsharness.org` is registered at Porkbun and configured in `CNAME`.
 
 The current reviewed local checkout is on `codex/opsharness-homepage`. Publish
 subsequent committed changes from that checkout with:
@@ -104,26 +107,16 @@ subsequent committed changes from that checkout with:
 git push origin HEAD:main
 ```
 
-### Custom domain after purchase
+### Preserve the custom domain
 
-`opsharness.ai` has not yet been purchased or bound. Keep the GitHub URL working
-until the domain is registered in your own account.
-
-1. In GitHub **Settings → Pages → Custom domain**, save `opsharness.ai` (without
-   `https://`). GitHub adds a `CNAME` file to the publishing branch.
-2. In the domain's DNS manager, add these records:
-
-   | Type | Name | Value |
-   | --- | --- | --- |
-   | A | @ | 185.199.108.153 |
-   | A | @ | 185.199.109.153 |
-   | A | @ | 185.199.110.153 |
-   | A | @ | 185.199.111.153 |
-   | CNAME | www | huanghy95.github.io |
-
-3. Wait for DNS verification and the HTTPS certificate, then enable **Enforce HTTPS**.
-4. Before the next local edit/push, bring GitHub's `CNAME` commit into the working
-   branch with `git pull --ff-only origin main`. Keep that file in future releases.
+- Keep `CNAME` set to `opsharness.org` in every release.
+- Porkbun keeps its existing nameservers. The apex ALIAS and `www` CNAME both
+  target `huanghy95.github.io`, without a protocol or repository path.
+- Keep the `_github-pages-challenge-huanghy95` TXT record used by GitHub's
+  account-level domain verification. Do not replace it with a wildcard record.
+- Canonical and social-sharing URLs in `index.html` use `https://opsharness.org/`.
+- If GitHub's UI creates a new commit, run `git pull --ff-only origin main`
+  before making the next local change.
 
 Official references: [Pages publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 and [custom domain configuration](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).

@@ -75,6 +75,15 @@ class HomepageContractTests(unittest.TestCase):
         cls.parser = SiteParser()
         cls.parser.feed(cls.source)
 
+    def test_custom_domain_metadata_matches_pages_configuration(self):
+        self.assertEqual((ROOT / "CNAME").read_text().strip(), "opsharness.org")
+        self.assertIn('<link rel="canonical" href="https://opsharness.org/">', self.source)
+        self.assertIn('<meta property="og:url" content="https://opsharness.org/">', self.source)
+        self.assertIn(
+            'content="https://opsharness.org/static/images/intro-superpowers.webp"',
+            self.source,
+        )
+
     def test_required_sections_exist(self):
         expected = {
             "overview",
