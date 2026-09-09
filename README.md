@@ -90,8 +90,8 @@ Current deployment status and domain configuration (Chinese):
 [docs/deployment.md](docs/deployment.md).
 
 GitHub Pages is configured to publish from **main → / (root)**.
-The custom domain is <https://opsharness.org/>. See the deployment document for
-DNS verification and HTTPS status.
+The live site is <https://opsharness.org/>, with domain ownership verified and HTTPS
+enforced. Both the apex and `www` domains are covered by the certificate.
 The original <https://huanghy95.github.io/opsharness-homepage/> address redirects
 to the custom domain once the binding is active.
 GitHub Pages uses `_config.yml`

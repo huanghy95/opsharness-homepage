@@ -6,12 +6,12 @@
 - 已按用户授权将主页仓库改为 Public。
 - GitHub Pages 已启用，发布源为 `main` 分支的 `/ (root)`。
 - 正式域名：`opsharness.org`，由用户在 Porkbun 注册。
-- 目标地址：https://opsharness.org/
+- 正式地址：https://opsharness.org/
 - 原地址：https://huanghy95.github.io/opsharness-homepage/ ，GitHub 会自动重定向至自定义域名。
 - `www.opsharness.org` 指向同一网站，并由 GitHub 重定向至根域名。
 - 每次推送到远端 `main` 分支都会触发部署，可在仓库 Actions 中查看结果。
 - GitHub 账户的域名所有权验证已通过，仓库 Pages 显示 `DNS check successful`。
-- HTTPS：正在等待 GitHub 自动签发证书；证书就绪后开启 `Enforce HTTPS`。
+- HTTPS 证书已签发，覆盖 `opsharness.org` 和 `www.opsharness.org`，`Enforce HTTPS` 已开启。
 
 GitHub Pages 的私有仓库套餐要求见[官方说明](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)。
 
